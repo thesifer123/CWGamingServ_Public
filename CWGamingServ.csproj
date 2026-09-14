@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="CWGaming.Shared/CWGaming.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Previously pulled in transitively via the (now removed) door project reference. The host masks
+         connection strings (Npgsql) and renders CP437 box-drawing art (CodePages). -->
+    <PackageReference Include="Npgsql" Version="8.0.6" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="CWGaming.Shared/**/*.cs" />
+    <Compile Remove="tools/**/*.cs" />
+  </ItemGroup>
+
+</Project>

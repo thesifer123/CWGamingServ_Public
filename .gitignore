@@ -1,0 +1,22 @@
+bin/
+obj/
+**/bin/
+**/obj/
+.vs/
+.vscode/
+*.user
+*.suo
+*.lscache
+# runtime logs
+logs/
+
+# multi-realm runtime (generated realms.json, proxy secret, logs)
+realms-run/
+
+# admin-console supervisor: host-specific live registry + runtime state (socket, pids, logs)
+supervisor/realms.json
+supervisor/run/
+
+# Local database backups (never commit)
+backups/
+*.sql

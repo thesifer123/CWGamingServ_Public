@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>TelnetRepro</AssemblyName>
+    <RootNamespace>TelnetRepro</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../../mmudreborn/src/mmudreborn.Server/mmudreborn.Server.csproj" />
+    <ProjectReference Include="../../CWGaming.Shared/CWGaming.Shared.csproj" />
+  </ItemGroup>
+
+  <!-- Link the real production parser so we exercise the exact code path. -->
+  <ItemGroup>
+    <Compile Include="../../TelnetClient.cs" Link="TelnetClient.cs" />
+  </ItemGroup>
+
+</Project>

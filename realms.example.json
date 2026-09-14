@@ -1,0 +1,10 @@
+{
+  "//": "Realm registry for the BBS front. Copy to realms.json (or set MMUDREBORN_REALMS_CONFIG).",
+  "//id": "Stable infra id / DB stem: 'main' -> mmudreborn, 'two' -> mmudreborn_two.",
+  "//displayName": "Player-facing menu label; rename freely without touching DBs or processes.",
+  "//backendPort": "Internal (non-public) telnet port the realm's backend game process listens on.",
+  "realms": [
+    { "id": "main", "displayName": "Main", "backendHost": "127.0.0.1", "backendPort": 2601, "enabled": true, "order": 1 },
+    { "id": "two",  "displayName": "PvP",  "backendHost": "127.0.0.1", "backendPort": 2602, "enabled": true, "order": 2 }
+  ]
+}
