@@ -47,19 +47,20 @@ public sealed class BbsDoorSession
         if (login == null)
             return;
 
-        // GHOSTING. An account authenticating here is, by definition, the newest connection it has — so any
-        // OTHER connection still signed in as this account is stale and must go now, not when (or if) this
-        // one reaches the realm.
+        // GHOSTING. An account authenticating here may still have OTHER connections signed in, but on a
+        // multi-realm board those can be perfectly healthy sessions in another realm (Main and PvP at once).
+        // So this drops only the ones that are provably DEAD — the kernel's keepalive evidence shows no ACK
+        // from the peer within the ghost-silence budget (TelnetServerHost.DisconnectOtherConnectionsForAccount).
+        // A live session is left alone however long it has been idle. The one-session-PER-REALM rule is
+        // enforced at realm entry (DisconnectOtherConnectionsForAccountInRealm), where the realm is known.
         //
         // Nearly every player runs auto-reconnect software, which makes this the fast path back after a
-        // dropped link. The only duplicate-session guard used to sit at realm entry
-        // (GameSession.RunForPlayerAsync -> DisconnectOnlineCharacter), so a reconnecting client had to
-        // clear BBS login, the BBS menu (10s auto-advance), the MUD menu and the realm picker (another 10s)
-        // before its ghost was taken out of the world — twenty-odd seconds of standing in a room being
-        // attacked with nobody at the keyboard, and forever if the software only reopens the socket and
-        // waits for a human. Dropping the stale CONNECTION here reuses the whole existing teardown chain:
-        // the proxy legs unwind, the backend socket closes, and the door's HandleDroppedConnection pulls
-        // the character out of the world. Realm entry still does its own check, as a backstop.
+        // dropped link: without it a reconnecting client had to clear BBS login, the BBS menu (10s
+        // auto-advance), the MUD menu and the realm picker (another 10s) before its dead ghost was taken out
+        // of the world — twenty-odd seconds of standing in a room being attacked with nobody at the keyboard,
+        // and forever if the software only reopens the socket and waits for a human. Dropping the dead
+        // CONNECTION here reuses the whole existing teardown chain: the proxy legs unwind, the backend socket
+        // closes, and the door's HandleDroppedConnection pulls the character out of the world.
         _disconnectOtherConnectionsForAccount?.Invoke(login.Account.UserName, _client);
 
         SetPresenceLocation("Main Menu");
